@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/stylesheets/bootstrap.css" type="text/css" media="screen" charset="utf-8"/>
+    <link rel="stylesheet" href="/stylesheets/bootstrap-responsive.css" type="text/css" media="screen" charset="utf-8"/>
+
+    <!-- load require js bootup file -->
+    <script src="/javascripts/lib/require.js" data-main="/javascripts/boot" type="text/javascript" charset="utf-8"></script>
+
+  </head>
+  <body>
+
+    <!-- begin menu -->
+    <div id="" class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">{{ title }}</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <!-- navigation View should go here!! -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end top menu -->
+
+
+      <h1>{{ title }}</h1>
+
+
+
+    <p>Welcome to {{ title }}</p>
+  </body>
+</html>

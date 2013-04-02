@@ -4,7 +4,7 @@ define(['router', 'views/sidebarview'], function(router, SidebarView) {
 
   var ApplicationController = Backbone.View.extend({
     tagName: "div",
-    router : router,
+    _router : router,
     initialize  : function() {
 
 
@@ -12,6 +12,17 @@ define(['router', 'views/sidebarview'], function(router, SidebarView) {
     events : {
 
 
+    },
+    router : function() {
+      return this._router;
+    },
+    navigate : function(route, opt) {
+      var defaults = {
+        trigger : true // this is set so that navigation by default triggers the popstate event!
+      };
+      opt = opt || {};
+      opt = _.defaults(opt, defaults);
+      this._router.navigate(route, opt);
     },
 
     render : function() {

@@ -4,6 +4,7 @@ define(['!text!templates/source/home.hbs', 'handlebars'], function(homeSource, H
   var HomeView = new Backbone.View.extend({
     tagName: 'div',
     template: function() {
+      //this will be refactored into compiled templates later
       return Handlebars.compile(homeSource);
     },
     initialize: function() {

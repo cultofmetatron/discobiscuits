@@ -1,6 +1,4 @@
-define(
-
-    ['backbone' , 'views/applicationview'],
+define(['backbone' , 'views/applicationview'],
 
 function(backbone, ApplicationView) {
 

@@ -1,7 +1,7 @@
 //The application model
 
 define(['backbone'], function() {
-  var ApplicationController = Backbone.Model.Controller({
+  var ApplicationController = Backbone.Model.extend({
     initialize: function() {
 
 
@@ -13,6 +13,7 @@ define(['backbone'], function() {
 
   });
 
+  return ApplicationController;
 });
 
 

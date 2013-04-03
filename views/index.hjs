@@ -33,8 +33,14 @@
     <!-- end top menu -->
 
     <div class="container entry-point">
-      <h1>{{ title }}</h1>
-      <p>music that doesn't take itself seriously at all</p>
+      <div class="row">
+        <div class="sidebar span3">
+
+        </div>
+        <div class="main span8 offset1">
+
+        </div>
+      </div>
     </div>
 
 

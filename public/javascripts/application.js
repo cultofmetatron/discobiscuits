@@ -1,11 +1,11 @@
-define(['backbone' , 'views/applicationview'],
+define(['backbone' , 'router', 'models/applicationmodel'],
 
-function(backbone, ApplicationView) {
+function(backbone, Router, ApplicationModel) {
   var initialize = function() {
     Backbone.history.start({pushState:true});
-    var app = new ApplicationView({});
-    app.router().navigate(getPath());
-    $('div.entry-point').html(app.render());
+    var app = new ApplicationModel({});
+    var router = new Router({});
+    router.init(app, getPath());
   };
 
   var getPath = function() {

@@ -8,8 +8,18 @@ define(['text!templates/source/home.hbs', 'handlebars', 'backbone'], function(ho
       console.log('in homeView');
     },
     render: function() {
-      return this.template();
+      return this.$el.addClass('span9').append(this.template());
+    },
+    events: {
+      'click a' : function(e) {
+        e.preventDefault();
+        console.log('clicked');
+        this.trigger('navigate', "/signup");
+
+      }
+
     }
+
 
 
   });

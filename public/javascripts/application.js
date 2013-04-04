@@ -2,10 +2,12 @@ define(['backbone' , 'router', 'models/applicationmodel'],
 
 function(backbone, Router, ApplicationModel) {
   var initialize = function() {
-    Backbone.history.start({pushState:true});
     var app = new ApplicationModel({});
     var router = new Router({});
+    var foo = Backbone.history.start({pushState:true});
     router.init(app, getPath());
+    router.navigate('/login', {trigger:true});
+    router.navigate('/signup', {trigger:true});
   };
 
   var getPath = function() {

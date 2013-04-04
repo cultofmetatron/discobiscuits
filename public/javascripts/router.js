@@ -1,6 +1,7 @@
 // this is the router system
 define(['views/sidebarview', 'views/homeview' , 'backbone'], function(SidebarView, HomeView) {
   var Router = Backbone.Router.extend({
+
     init  : function(app, route) {
       //initialize app
       this.app = app;
@@ -9,13 +10,29 @@ define(['views/sidebarview', 'views/homeview' , 'backbone'], function(SidebarVie
       //set up model
       $('div.sidebar').html(this.app.get('sidebar').render());
       $('div.main').html(this.app.get('bigpanel').render());
-      this.navigate(route, {trigger: true });
+    },
+
+    isLoggedIn: function() {
+      //checks if logged in
+      return false;
     },
     routes: {
-      'home':'home'
+      'home'   : 'home',
+      'login'  : 'login',
+      'signup' : 'signup'
     },
     home: function() {
       //the home screen
+
+
+    },
+    login: function() {
+      console.log('in the loginz');
+      this.navigate('signup', {trigger: true});
+
+    },
+    signup: function() {
+      console.log('in the signupz');
 
 
     }

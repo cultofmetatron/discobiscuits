@@ -3,11 +3,15 @@
  * Module dependencies.
  */
 
-var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
-  , http = require('http')
-  , path = require('path');
+var express = require('express');
+var routes = require('./routes');
+var user = require('./routes/user');
+var http = require('http');
+var path = require('path');
+var mongoose = require('mongoose');
+
+//the connection protocols for mongodb
+var MONGO_URL  = process.env.MONGO_DISCO_DEV_URL;
 
 var app = express();
 
@@ -24,6 +28,7 @@ var app = express();
   app.use(app.router);
   app.use(require('stylus').middleware(__dirname + '/public'));
   app.use(express.static(path.join(__dirname, 'public')));
+  mongoose.connect(MONGO_URL);
 
 // development only
 if ('development' == app.get('env')) {
@@ -31,6 +36,8 @@ if ('development' == app.get('env')) {
 }
 
   app.get('/', routes.index);
+  app.get('/login', routes.login);
+  app.get('/signup', routes.signup);
   app.get('/home', routes.home);
   app.get('/users', user.list);
 

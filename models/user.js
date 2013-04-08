@@ -1,48 +1,56 @@
 /* user profile schema */
-module.exports = function(mongoose) {
-  var crypto = require('crypto');
-  var salt   = process.env.DISCO_SALT || "";
+var mongoose = require('mongoose');
 
-  var LocalUserSchema = new mongoose.Schema({
-    email    : {type: String, unique: true },
-    password : {type: String },
-    joined   : {type: Date }
+var crypto = require('crypto');
+var salt   = process.env.DISCO_SALT || "";
 
-  });
+var LocalUserSchema = new mongoose.Schema({
+  email    : {type: String, unique: true },
+  password : {type: String },
+  joined   : {type: Date }
 
-  var LocalUser = mongoose.model('local-user', LocalUserSchema);
+});
 
-  /* Query models for the user */
+ /* Query models for the user */
 
-  var exists = function(email, callback) {
-    //returns the user id if he exists
-    LocalUser.findOne({
-      email: email
-    });
-  };
+LocalUserSchema.statics.exists = function(email, callback) {
+  //returns the user id if he exists
+  LocalUser.findOne({
+    email: email
+  }, callback);
 
-  var createUser = function(email, password, callback) {
-    var shaSum = crypto.createHash('sha512');
-    shaSum.update(password + salt);
-
-    var user = new User({
-      email    : email,
-      password : shaSum.digest('hex'),
-      joined   : Date.now()
-    });
-
-    callback = callback || function() {};
-    user.save(callback);
-  };
-
-
-
-
-  return {
-    User:User,
-    register : createUser
-  };
 };
+
+LocalUserSchema.statics.createUser = function(email, password, callback) {
+  var shaSum = crypto.createHash('sha512');
+  shaSum.update(password + salt);
+
+  var user = new LocalUser({
+    email    : email,
+    password : shaSum.digest('hex'),
+    joined   : Date.now()
+  });
+  return user.save(callback);
+};
+
+/* signIn encapsulates verifying if the user exists or not.
+ * it then calls the user lookup and passes along the callback
+ */
+
+LocalUserSchema.statics.signIn = function(email, password, callback) {
+  //sets up the crypto salt for the user
+  var shaSum = crypto.createHash('sha512');
+      shaSum.update(password + salt);
+
+  var user = User.findOne({
+    email    :  email,
+    password :  shaSum.digest('hex')
+  }, callback ); //callback => function(err, user) {}
+};
+
+
+// this is the final falue that is returned
+var LocalUser = module.exports = mongoose.model('local-user', LocalUserSchema);
 
 
 

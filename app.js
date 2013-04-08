@@ -8,7 +8,15 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
+
+//Mongoose ORM for mongodb
 var mongoose = require('mongoose');
+
+//passwort authntication system
+var passport        = require('passport');
+var LocalStrategy   = require('passport-local').Strategy;
+
+passport.use(new LocalStrategy(user.signIn));
 
 //the connection protocols for mongodb
 var MONGO_URL  = process.env.MONGO_DISCO_DEV_URL;

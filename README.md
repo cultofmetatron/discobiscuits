@@ -1,4 +1,6 @@
 discobiscuits
 =============
 
-a dropbox powered music player
+A dropbox powered music player
+
+Currently being developed. please check in later :)

@@ -30,12 +30,15 @@ var User = require('./models/user')(mongoose);
 var passport        = require('passport');
 var LocalStrategy   = require('passport-local').Strategy;
 
-passport.use(new LocalStrategy(function(username, password, done) {
-  console.log('in the passport use', username);
+passport.use(new LocalStrategy({
+    usernameField: 'email' //since we are using email logins
+  },
+  function(email, password, done) {
+  console.log('in the passport use', email);
   console.log('here isUser', User);
-  User.signIn(username, password, function(err, user) {
+  User.signIn(email, password, function(err, user) {
     if (err) { return done(err); }
-    if (!user) { return done(null, false, "username not found"); }
+    if (!user) { return done(null, false, "email login not found"); }
     return done(null, user); //return the user
   });
 }));
@@ -83,10 +86,30 @@ if ('development' == app.get('env')) {
   app.get('/', routes.index);
 
   app.get('/login', routes.login);
-  app.post('/login', passport.authenticate('local', {
-    successRedirect: '/home',
-    failureRedirect: '/login'
-  }));
+  app.post('/login', function(req, res) {
+    console.log(res);
+    passport.authenticate('local', function(err, user) {
+      if (req.xhr) {
+        //thanks @jkevinburton
+        if (err)   { return res.json({ error: err.message }); }
+        if (!user) { return res.json({error : "Invalid Login"}); }
+        req.login(user, {}, function(err) {
+          if (err) { return res.json({error:err}); }
+          return res.json({ user: req.user, success: true });
+        });
+      } else {
+        if (err)   { return res.redirect('/login'); }
+        if (!user) { return res.redirect('/login'); }
+        req.login(user, {}, function(err) {
+          if (err) { return res.redirect('/login'); }
+          return res.redirect('/');
+        });
+
+
+      }
+
+    })(req, res);
+  });
 
   app.get('/signup', routes.signup);
   app.get('/home', routes.home);

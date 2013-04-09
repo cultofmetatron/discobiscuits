@@ -14,7 +14,7 @@ exports.home = function(req, res) {
 };
 
 exports.login = function(req, res) {
-  res.render('index', {title: 'DiscoBiscuits' });
+  res.render('login', {title: 'DiscoBiscuits' });
 };
 
 exports.signup = function(req, res) {

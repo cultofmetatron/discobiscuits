@@ -20,6 +20,7 @@ module.exports = function(mongoose) {
     }, callback);
   };
 
+  /* create user creaetes  the user and delegates the callback */
   LocalUserSchema.statics.createUser = function(email, password, callback) {
     var shaSum = crypto.createHash('sha512');
     shaSum.update(password + salt);

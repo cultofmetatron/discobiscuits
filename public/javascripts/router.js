@@ -1,17 +1,13 @@
 // this is the router system
-define(['views/sidebarview', 'views/homeview' , 'backbone'], function(SidebarView, HomeView) {
+define(['views/sidebarview', 'views/homeview', 'views/bigloginview', 'backbone'],
+    function(SidebarView, HomeView, BigLoginView) {
   var Router = Backbone.Router.extend({
 
-    init  : function(app, route) {
-      //initialize app
-      this.app = app;
-      this.app.set('sidebar', new SidebarView({}));
-      this.app.set('bigpanel', new HomeView({}));
-      //set up model
-      $('div.sidebar').html(this.app.get('sidebar').render());
-      $('div.main').html(this.app.get('bigpanel').render());
+    init  : function(route) {
+      //setting up the sidebar
+      $('div.sidebar').html(new SidebarView({}).render());
+      this.navigate(route, {trigger: true});
     },
-
     isLoggedIn: function() {
       //checks if logged in
       return false;
@@ -21,15 +17,20 @@ define(['views/sidebarview', 'views/homeview' , 'backbone'], function(SidebarVie
       'login'  : 'login',
       'signup' : 'signup'
     },
+    loadBigPanel: function(PanelView, context) {
+      context = context || {};
+      $('div.main').html(new PanelView(context).render());
+
+    },
     home: function() {
       //the home screen
-
+      this.loadBigPanel(HomeView);
+      this.navigate('login', {trigger: true});
 
     },
     login: function() {
       console.log('in the loginz');
-      this.navigate('signup', {trigger: true});
-
+      this.loadBigPanel(BigLoginView);
     },
     signup: function() {
       console.log('in the signupz');

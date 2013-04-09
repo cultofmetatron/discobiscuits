@@ -5,7 +5,6 @@ define(['text!templates/source/home.hbs', 'handlebars', 'backbone'], function(ho
     tagName: 'div',
     template: Handlebars.compile(homeSource),
     initialize: function() {
-      console.log('in homeView');
     },
     render: function() {
       return this.$el.addClass('span9').append(this.template());

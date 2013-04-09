@@ -1,6 +1,7 @@
 requirejs.config({
   paths: {
     jquery              : '/javascripts/lib/jquery-19',
+    jquery_form         : '/javascripts/lib/jquery.form',
     underscore          : 'http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min',
     backbone            : 'http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone',
     backbone_relational : 'http://cdnjs.cloudflare.com/ajax/libs/backbone-relational/0.7.0/backbone-relational.min',
@@ -12,6 +13,7 @@ requirejs.config({
   },
   //shims make dependences load in the correct order
   shim: {
+    jquery_form         : ['jquery'],
     backbone            : ['jquery', 'underscore'],
     bootstrap           : ['jquery'],
     backbone_relational : ['backbone'],

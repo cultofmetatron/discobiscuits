@@ -44,7 +44,7 @@ passport.use(new LocalStrategy({
 }));
 
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  done(null, user._id);
 });
 
 passport.deserializeUser(function(id, done) {
@@ -95,7 +95,14 @@ if ('development' == app.get('env')) {
         if (!user) { return res.json({error : "Invalid Login"}); }
         req.login(user, {}, function(err) {
           if (err) { return res.json({error:err}); }
-          return res.json({ user: req.user, success: true });
+          return res.json(
+            { user: {
+                      id: req.user.id,
+                      email: req.user.email,
+                      joined: req.user.joined
+              },
+              success: true
+            });
         });
       } else {
         if (err)   { return res.redirect('/login'); }
@@ -104,10 +111,7 @@ if ('development' == app.get('env')) {
           if (err) { return res.redirect('/login'); }
           return res.redirect('/');
         });
-
-
       }
-
     })(req, res);
   });
 

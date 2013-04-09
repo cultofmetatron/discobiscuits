@@ -5,3 +5,9 @@ body {
 a {
   color: #00b7ff;
 }
+span.hidden {
+  display: hidden;
+}
+span.notice {
+  color: #008000;
+}

@@ -4,8 +4,9 @@ function(backbone, Router, ApplicationModel) {
   var initialize = function() {
     window.app = new ApplicationModel({});
     app.set('router', new Router());
-    var foo = Backbone.history.start({pushState:true});
-    app.get('router').init(getPath());
+
+    Backbone.history.start({pushState:true});
+    app.get('router').init(getPath(), app);
   };
 
   var getPath = function() {

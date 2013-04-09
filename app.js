@@ -84,7 +84,7 @@ if ('development' == app.get('env')) {
 
   app.get('/login', routes.login);
   app.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
+    successRedirect: '/home',
     failureRedirect: '/login'
   }));
 

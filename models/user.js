@@ -33,11 +33,10 @@ module.exports = function(mongoose) {
     return user.save(callback);
   };
 
-  /* signIn encapsulates verifying if the user exists or not.
+  /* localSignIn encapsulates verifying if the user exists or not.
    * it then calls the user lookup and passes along the callback
    */
-
-  LocalUserSchema.statics.signIn = function(email, password, callback) {
+  LocalUserSchema.statics.localSignIn = function(email, password, callback) {
     //sets up the crypto salt for the user
     var shaSum = crypto.createHash('sha512');
         shaSum.update(password + salt);

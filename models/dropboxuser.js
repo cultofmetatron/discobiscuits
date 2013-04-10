@@ -9,6 +9,8 @@ module.exports = function(mongoose, passport) {
 
   });
 
+  DropboxUserSchema.statics.callbackURL = "http://127.0.0.1:3000/auth/dropbox/callback";
+
 
   /* create user creaetes  the user and delegates the callback */
   DropboxUserSchema.statics.createUser = function(email, password, callback) {

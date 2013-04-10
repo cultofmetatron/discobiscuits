@@ -26,19 +26,41 @@ mongoose.connect(mongoUrl);
 
 var User = require('./models/user')(mongoose);
 
-//passwort authntication system
+//passport authentication system
 var passport        = require('passport');
 var LocalStrategy   = require('passport-local').Strategy;
+
+var DropboxStrategy = require('passport-dropbox').Strategy;
+var DropBoxCredentials = {
+  key    : process.env.MONGO_DISCO_DEV_DROPBOX_KEY,
+  secret : process.env.MONGO_DISCO_DEV_DROPBOX_SECRET
+};
+
+
+console.log(DropBoxCredentials);
+passport.use(new DropboxStrategy({
+  //dropbox strategy
+    consumerKey    :  DropBoxCredentials.key,
+    consumerSecret :  DropBoxCredentials.secret,
+    callbackURL: "http://127.0.0.1:3000/auth/dropbox/callback"
+  },
+  function(token, tokenSecret, profile, done) {
+
+    process.nextTick(function() {
+
+      return done(null, profile);
+    });
+  }
+));
 
 passport.use(new LocalStrategy({
     usernameField: 'email' //since we are using email logins
   },
   function(email, password, done) {
-  console.log('in the passport use', email);
-  console.log('here isUser', User);
-  User.signIn(email, password, function(err, user) {
+  User.localSignIn(email, password, function(err, user) {
     if (err) { return done(err); }
     if (!user) { return done(null, false, "email login not found"); }
+    user.type = "local";
     return done(null, user); //return the user
   });
 }));
@@ -86,8 +108,13 @@ if ('development' == app.get('env')) {
   app.get('/', routes.index);
 
   app.get('/login', routes.login);
+
+  var xhrLoginHandler = function(req, res) {
+
+
+  };
+
   app.post('/login', function(req, res) {
-    console.log(res);
     passport.authenticate('local', function(err, user) {
       if (req.xhr) {
         //thanks @jkevinburton
@@ -113,6 +140,35 @@ if ('development' == app.get('env')) {
         });
       }
     })(req, res);
+  });
+
+  app.get('/auth/dropbox', function(req, res) {
+    passport.authenticate('dropbox', function(err, profile) {
+      if (err) { return res.redirect('/login'); }
+      if (profile) {
+        console.log(profile);
+        return res.redirect('/');
+
+      }
+
+    })(req, res);
+
+  });
+
+  app.get('/auth/dropbox/callback', function(req, res) {
+    passport.authenticate('dropbox', function(err, profile) {
+      console.log('this is res');
+      if (err) { return res.redirect('/login'); }
+      if (!err && profile) {
+        console.log(profile);
+        return res.redirect('/');
+      }
+    })(req, res);
+  });
+
+  app.get('/authenticated', function(req, res) {
+    console.log(req.user);
+
   });
 
   app.get('/signup', routes.signup);
